@@ -1,3 +1,9 @@
+# Ignore this Mac-specific file
+.DS_Store
+
+# Ignore dotenv files
+.env
+
 *.gem
 *.rbc
 /.config
