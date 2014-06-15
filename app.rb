@@ -1,5 +1,4 @@
 require 'json'
-
 require 'sinatra'
 require 'simple_oauth'
 require 'excon'
