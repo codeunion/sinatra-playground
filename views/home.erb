@@ -29,21 +29,30 @@ routes.
 
        https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a %>
 </p>
+
 <%# `p` tags surround a paragraph of text:
   https://developer.mozilla.org/en-US/docs/Web/HTML/Element/p %>
 
 
 <form method="POST" action="/reverse">
+
+
+  <%# `form` tags create an interactive section of the website a user
+       can fill out:
+         https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form 
+
+       The `method` atttribute is used to state which kind of HTTP request is
+       sent when the form is submitted. `action` says which `URL` the request
+       is sent too. %>
+
   <textarea name="words"><%=@words%></textarea><br />
-  <%# `textarea` tags let users fill in oddles of text:
-       https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea %>
+  <%# `textarea` tags let users fill in oddles of text. The name tells what key
+       the value the user inserts will be in the `params` variable:
+         https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea %>
 
 
   <button>Reverse Me!</button>
   <%# `button` tags... kinda say what they do... They can be used to `submit` a
-      form: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button %>
+      form:
+        https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button %>
 </form>
-
-<%# The `form` tag creates an interactive section of the website that a user
-    can fill out:
-    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form %>
