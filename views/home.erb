@@ -1,0 +1,10 @@
+<h1>Wisdom Of The Sages</h1>
+<p><%= @words %></p>
+
+<p><a href="/">Tell Me More!</a> or <a href="/tweets">See Some Tweets</a></p>
+
+
+<form method="POST" action="/reverse">
+  <textarea name="words"><%=@words%></textarea><br />
+  <button>Reverse Me!</button>
+</form>

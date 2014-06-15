@@ -1,0 +1,9 @@
+<form method="GET" action="/tweets">
+  <label>Twitter Screen Name:
+    <input type="text" name="screen_name" /></label>
+  <button>Let's See Some Tweets!</button>
+</form>
+
+<% @tweets.each do |tweet| %>
+  <p><%= tweet["text"] %> - <%= tweet["user"]["screen_name"] %></p>
+<% end %>
