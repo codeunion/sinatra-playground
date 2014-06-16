@@ -18,16 +18,13 @@ end
 # config:set VARIABLE_NAME="value"`:
 #   https://devcenter.heroku.com/articles/config-vars#setting-up-config-vars-for-a-deployed-application
 
-unless ENV['TWITTER_API_KEY'] && ENV['TWITTER_API_SECRET']
-  raise "Woah there, set your environment variables; skippy!"
-end
-
 
 def reverse(words)
   new_words = []
   words.split(" ").each do |word|
     new_words.unshift(word.reverse)
-    #array.unshift is like push; but it puts it at the beginning of the array
+    #array.unshift is like array.push, but it prepends data to the beginning
+    # of an array instead of appending it to the end.
   end
 
   new_words.join(" ")
@@ -67,12 +64,15 @@ QUOTES = ["It's life Jim, but not as we know it!",
 
 # Truly, great wisdom of the ages...
 
-get '/' do
-# `get` is a sinatra method that lets respond to http requests.
-# `get` takes two arguments:
-#   * a string for the path to respond to
-#   * a `block` of instructions to execute when a request is sent using the
-#     `GET` http verb. (Blocks are those `do ... end` things.)
+get('/') do
+  # `get` is a sinatra method that lets us respond to HTTP requests, e.g.,
+  # from a browser.
+  # `get` takes two arguments:
+  #   * a string for the path to respond to
+  #   * a `block` of instructions to execute when a request is sent using the
+  #     `GET` http verb. (Blocks are those `do ... end` things.)
+  #     This comment is inside one right now!
+
 
   @words = QUOTES.sample
   # The `@` sign denotes an `instance variable`. This is how we share `data`
@@ -87,7 +87,7 @@ get '/' do
   # result as a string.
 end
 
-post '/reverse' do
+post('/reverse') do
 # Sinatra's `post` method is similar to `get`, except it responds only to
 # `requests` sent with the `POST` http verb.
 
@@ -113,11 +113,15 @@ post '/reverse' do
   # instance variable; since it's being used to pre-fill the words textarea.
 end
 
-get '/tweets' do
-  if params[:screen_name]
+get('/tweets') do
+  if ENV['TWITTER_API_KEY'].nil? || ENV['TWITTER_API_SECRET'].nil?
+    "Hey!  Wait a second.  Look in app.rb and set up your Twitter API key and secret."
+  elsif params[:screen_name]
     @tweets = tweets(params[:screen_name])
+    erb :tweets
   else
     @tweets = []
+    erb :tweets
   end
   # If someone requests this page without passing in a `screen_name` variable;
   # we want to default to an empty list of tweets.
@@ -125,6 +129,5 @@ get '/tweets' do
   # Don't believe me? Delete 94 and 96 - 98 and read the error message!
   # Why do you think that is there?
 
-  erb :tweets
   # Which template do you think `erb` will use to render these tweets?
 end
