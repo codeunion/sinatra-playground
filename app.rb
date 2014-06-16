@@ -3,20 +3,31 @@ require 'sinatra'
 require 'simple_oauth'
 require 'excon'
 
-begin
-require 'dotenv'
-Dotenv.load ".env"
-rescue LoadError
+if ENV['RACK_ENV'] != "production"
+  require 'dotenv'
+  Dotenv.load ".env"
 end
-# Because `dotenv` is not installed on heroku, any attempt to require it will
-# raise an error. To prevent our app from crashing; we're going to rescue the
-# error and carry on merrily.
+
+# Since Heroku only has the files in git and we prevent .env from being checked
+# in; we can't use Dotenv on Heroku.
+#
+# Heroku sets an environment variable called `RACK_ENV` to "production" on ruby
+# apps; so we use that to skip loading Dotenv.
+#
+# For all the rest of the variables we set in `.env` we'll use `heroku
+# config:set VARIABLE_NAME="value"`:
+#   https://devcenter.heroku.com/articles/config-vars#setting-up-config-vars-for-a-deployed-application
+
 
 
 def reverse(words)
-  words.split(" ").map do |word|
-    word.reverse
-  end.join(" ")
+  new_words = []
+  words.split(" ").each do |word|
+    new_words.unshift(word.reverse)
+    #array.unshift is like push; but it puts it at the beginning of the array
+  end
+
+  new_words.join(" ")
   # This highly complex encryption algorithm will surely dupe the NSA!
 end
 
@@ -32,7 +43,17 @@ def tweets(screen_name)
     :query => { :screen_name => screen_name },
     :headers => { "Authorization" => authorization_header.to_s }
   })
-  JSON.parse(response.body)
+
+  response = JSON.parse(response.body)
+  if response.has_key?("errors")
+    messages = []
+    response["errors"].each do |error|
+      messages.push(error["message"])
+    end
+    raise "Woah! Lookit all these errors! #{messages.join("\n")}"
+  else
+    return response
+  end
   # If only it were possible to re-use code without copying and pasting...
   # http://guides.rubygems.org/make-your-own-gem/
 end
@@ -41,15 +62,14 @@ QUOTES = ["It's life Jim, but not as we know it!",
           "Safety Dance!",
           "What is the airspeed velocity of a coconut laden swallow?"]
 
-# Truly, some of the great wisdom of the ages...
+# Truly, great wisdom of the ages...
 
 get '/' do
-# `get` is a sinatra method that lets you define a `route`.
-# The block gets called when a GET request for the `path`
-# specified.
-
-# When the block returns a string that string becomes the `body` of
-# the `http response` sent to the `client`
+# `get` is a sinatra method that lets respond to http requests.
+# `get` takes two arguments:
+#   * a string for the path to respond to
+#   * a `block` of instructions to execute when a request is sent using the
+#     `GET` http verb. (Blocks are those `do ... end` things.)
 
   @words = QUOTES.sample
   # The `@` sign denotes an `instance variable`. This is how we share `data`
@@ -65,7 +85,8 @@ get '/' do
 end
 
 post '/reverse' do
-# `post` is similar to `get`, except it responds only to `POST` requests.
+# Sinatra's `post` method is similar to `get`, except it responds only to
+# `requests` sent with the `POST` http verb.
 
   unreversed_words = params[:words]
   # `params` is a hash provided by Sinatra that includes any `query variables`
@@ -82,7 +103,7 @@ post '/reverse' do
   # is running the app. The request will include a form variable named `words`
   # with a value of whatever the user put in.
 
-  @words = reverse(unreserved_words)
+  @words = reverse(unreversed_words)
   erb :home
   # We can call methods we defined earlier in the file from within a route
   # Because we're re-using the `home` template; we want to re-use the `@words`
@@ -102,5 +123,5 @@ get '/tweets' do
   # Why do you think that is there?
 
   erb :tweets
-  # Which file do you think this is using?
+  # Which template do you think `erb` will use to render these tweets?
 end

@@ -12,12 +12,5 @@ gem "excon"
 # excon helps you send http requests in ruby. Perfect for
 # working with web services!
 
-group :development, :test do
-# We use groups to prevent us from using `dotenv` on Heroku, since heroku
-# manages environment variables for us.
-# See: https://blog.heroku.com/archives/2011/2/15/using-bundler-groups-on-heroku
-# and: https://devcenter.heroku.com/articles/config-vars#setting-up-config-vars-for-a-deployed-application
-
-  gem "dotenv"
-  # dotenv helps you load information into your app as environment variables.
-end
+gem "dotenv"
+# dotenv helps you load information into your app as environment variables.
