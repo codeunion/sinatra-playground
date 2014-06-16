@@ -10,4 +10,5 @@ over the Internet!
 ## Let's DO THIS!
 
 * Fork and Clone this repo
-* [Get Started!](https://github.com/codeunion/sinatra-playground/wiki/Home)
+* [Get
+  Started!](https://github.com/codeunion/sinatra-playground/wiki/Getting-Started)
