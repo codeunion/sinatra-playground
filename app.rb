@@ -48,7 +48,7 @@ def tweets(screen_name)
   })
 
   response = JSON.parse(response.body)
-  if response.has_key?("errors")
+  if response.respond_to?(:has_key?) && response.has_key?("errors")
     messages = []
     response["errors"].each do |error|
       messages.push(error["message"])
