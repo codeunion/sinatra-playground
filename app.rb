@@ -18,6 +18,9 @@ end
 # config:set VARIABLE_NAME="value"`:
 #   https://devcenter.heroku.com/articles/config-vars#setting-up-config-vars-for-a-deployed-application
 
+unless ENV['TWITTER_API_KEY'] && ENV['TWITTER_API_SECRET']
+  raise "Woah there, set your environment variables; skippy!"
+end
 
 
 def reverse(words)
