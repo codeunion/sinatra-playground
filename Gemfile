@@ -14,3 +14,7 @@ gem "excon"
 
 gem "dotenv"
 # dotenv helps you load information into your app as environment variables.
+
+gem "nokogiri"
+# nokogiri is used to parse HTML documents so that we can more easily
+# extract information from them.
