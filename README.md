@@ -20,7 +20,6 @@ over the Internet!
 ## Let's DO THIS!
 
 * [Fork and Clone][git-basics] this repo
-* [Get
-  Started!](https://github.com/codeunion/sinatra-playground/wiki/Getting-Started)
+* [Read the Wiki to Get Started!](https://github.com/codeunion/sinatra-playground/wiki/Getting-Started)
 
 [git-basics]:https://github.com/codeunion/fundamentals-of-web-development/wiki/Git-Basics#obtaining-remote-code--git-clone
